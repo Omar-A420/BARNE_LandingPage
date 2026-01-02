@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BARNE - Your Personal Productivity Assistant</title>
+    <meta name="description" content="BARNE helps you stay organized, focused, and on track. Join the waitlist for early access.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <!-- Logo placement - Edit logo image here -->
+            <div class="logo-container">
+                <img src="public/images/IMG-7665.png" alt="BARNE Logo" class="logo">
+            </div>
+
+            <!-- Main headline - Edit text here -->
+            <h1 class="headline">Meet BARNE.</h1>
+            <p class="subheadline">Your personal assistant for staying organized and reducing mental clutter</p>
+            
+            <button class="cta-button" id="joinWaitlistBtn">Join the Waitlist</button>
+        </div>
+        
+        <!-- Decorative accent -->
+        <div class="floating-accent"></div>
+        <div class="floating-accent-2"></div>
+        <div class="floating-accent-3"></div>
+        <div class="floating-accent-4"></div>
+    </section>
+
+    <!-- Waitlist Form Modal -->
+    <div class="modal-overlay" id="waitlistModal">
+        <div class="modal-content">
+            <button class="close-button" id="closeModal">&times;</button>
+            
+            <h2>Join the Waitlist</h2>
+            <p class="modal-description">Be the first to know when BARNE launches</p>
+            
+            <!-- Waitlist form - Connect to backend here -->
+            <form class="waitlist-form" id="waitlistForm">
+                <input 
+                    type="email" 
+                    placeholder="Enter your email address" 
+                    required 
+                    class="email-input"
+                    id="emailInput"
+                >
+                <button type="submit" class="submit-button">Get Early Access</button>
+            </form>
+            
+            <!-- Success message (hidden by default) -->
+            <div class="success-message" id="successMessage">
+                <p>✓ Thanks! We'll notify you when BARNE is ready.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Closing Section -->
+    <section class="closing">
+        <div class="container">
+            <!-- Closing text - Edit anticipation message here -->
+            <p class="closing-text">coming soon...</p>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
