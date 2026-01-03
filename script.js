@@ -148,9 +148,6 @@ class OceanCursor {
 
     // Touch events for mobile devices
     document.addEventListener('touchmove', (e) => {
-      // Prevent scrolling when touching
-      e.preventDefault()
-      
       const touch = e.touches[0]
       this.mouse.x = touch.clientX
       this.mouse.y = touch.clientY
@@ -163,7 +160,7 @@ class OceanCursor {
 
       // Update glow trail position
       this.updateGlowTrail()
-    }, { passive: false })
+    })
 
     // Handle touch end to maintain trail briefly
     document.addEventListener('touchend', (e) => {
