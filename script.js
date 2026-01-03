@@ -7,8 +7,7 @@ const waitlistModal = document.getElementById("waitlistModal")
 const closeModal = document.getElementById("closeModal")
 const waitlistForm = document.getElementById("waitlistForm")
 const successMessage = document.getElementById("successMessage")
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbycKEt3VwmhNyuP4y1EQOrqW3xp95G3IK1GDEbyHMJCkAlYR39WxBdU0s3p7n2HohVl/exec" // Replace with your Google Apps Script URL
-
+const GOOGLE_SCRIPT_URL = window.__BARNE_CONFIG__.GOOGLE_SCRIPT_URL; // Replace with your Google Apps Script URL
 
 // Open modal when "Join the Waitlist" button is clicked
 joinWaitlistBtn.addEventListener("click", () => {
@@ -43,27 +42,53 @@ waitlistForm.addEventListener("submit", async (e) => {
   e.preventDefault()
 
   const emailInput = document.getElementById("emailInput")
+  const submitButton = waitlistForm.querySelector(".submit-button")
   const email = emailInput.value.trim()
 
   if (!email) return
 
+  // Disable button and show loading state
+  submitButton.disabled = true
+  submitButton.textContent = "Submitting..."
+  submitButton.style.opacity = "0.7"
+
   try {
-      await fetch(GOOGLE_SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email }),
+    // Send email to Google Apps Script Web App
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({ email })
     })
 
-    // SUCCESS UI
-    console.log("Email submitted:", email)
+    // Read JSON response from Apps Script
+    const result = await response.json()
 
+    // Display backend message in the modal
+    successMessage.textContent = result.message || "Submitted."
+
+    // If backend says failure, show the message but treat as failure (no pretending)
+    if (!result.success) {
+      // Show the message in modal (still useful UX), then reset button and stop
+      waitlistForm.style.display = "none"
+      successMessage.classList.add("visible")
+
+      // Reset button state
+      submitButton.disabled = false
+      submitButton.textContent = "Get Early Access"
+      submitButton.style.opacity = ""
+
+      return
+    }
+
+    console.log("Email submitted successfully:", email)
+
+    // Process success - display success message
     waitlistForm.style.display = "none"
     successMessage.classList.add("visible")
 
-    // Auto close modal
+    // Reset form and button state after successful submission
     setTimeout(() => {
       waitlistModal.classList.remove("active")
       document.body.style.overflow = ""
@@ -71,15 +96,26 @@ waitlistForm.addEventListener("submit", async (e) => {
       setTimeout(() => {
         waitlistForm.style.display = "flex"
         successMessage.classList.remove("visible")
+        successMessage.textContent = "" // optional: clear for next time
         emailInput.value = ""
+        submitButton.disabled = false
+        submitButton.textContent = "Get Early Access"
+        submitButton.style.opacity = ""
       }, 300)
     }, 3000)
 
   } catch (error) {
+    // Handle submission failure - show error alert
     console.error("Submission error:", error)
     alert("Something went wrong. Please try again.")
+
+    // Reset button state on error
+    submitButton.disabled = false
+    submitButton.textContent = "Get Early Access"
+    submitButton.style.opacity = ""
   }
 })
+
 
 // Ocean cursor effect
 class OceanCursor {
